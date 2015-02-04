@@ -1,0 +1,25 @@
+{
+  "name": "qton-queue",
+  "version": "0.0.1",
+  "description": "Amazon SQS exploration",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "DenisH",
+  "license": "None",
+  "dependencies": {
+    "aws-sdk": "^2.1.8",
+    "good": "^5.1.1",
+    "good-console": "^4.1.0",
+    "hapi": "^8.1.0",
+    "mocha": "^2.1.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "should": "^4.6.3"
+  }
+}

@@ -1,7 +1,8 @@
-var should = AWS = require('aws-sdk'),
- awsRegion = 'eu-west-1',
- sqs = {},
- Hapi = require('hapi');
+"use strict";
+var AWS = require('aws-sdk'),
+        awsRegion = 'eu-west-1',
+        sqs = {},
+        Hapi = require('hapi');
 
 // Read the credentials from ~/.aws/credentials
 var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
@@ -19,8 +20,6 @@ server.route({
 });
 
 function sendSqsMessage(param) {
-    'use strict';
-
     AWS.config.update({region: awsRegion});
     sqs = new AWS.SQS();
 
@@ -41,16 +40,16 @@ function sendSqsMessage(param) {
 }
 
 server.route({
-    method: 'GET',
-    path: '/{name}',
+    method: 'POST',
+    path: '/send',
     handler: function (request, reply) {
-        var param = encodeURIComponent(request.params.name);
+        var param = JSON.stringify(request.payload);
         sendSqsMessage(param);
         reply('Your message ' + param + ' has been sent to queue!');
     }
 });
 
-var options = {
+var logOptions = {
     opsInterval: 1000,
     reporters: [{
         reporter: require('good-console'),
@@ -60,15 +59,12 @@ var options = {
 
 server.register({
     register: require('good'),
-    options: options
+    options: logOptions
 }, function (err) {
-
     if (err) {
         console.error(err);
-    }
-    else {
+    } else {
         server.start(function () {
-
             console.info('Server started at ' + server.info.uri);
         });
     }
